@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense AI | Smart Expense Tracker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body>
+
+<!-- AUTHENTICATION PAGE -->
+
+<div id="authPage" class="auth-page">
+
+    <!-- VIDEO BACKGROUND -->
+    <video class="auth-background-video" autoplay muted loop playsinline>
+        <source src="background.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <!-- DARK OVERLAY -->
+    <div class="auth-video-overlay"></div>
+
+    <div class="auth-layout">
+
+        <!-- LEFT HERO SECTION -->
+        <div class="auth-hero">
+
+            <div class="auth-brand">
+                <div class="brand-logo">EA</div>
+                <span>EXPENSE AI</span>
+            </div>
+
+            <div class="hero-content">
+                <span class="hero-tag">✦ SMART FINANCIAL INTELLIGENCE</span>
+
+                <h1>
+                    Take control<br>
+                    of your money.<br>
+                    <span>Spend smarter.</span>
+                </h1>
+
+                <p>
+                    Track expenses, manage budgets and understand
+                    your financial habits with Expense AI.
+                </p>
+
+                <div class="hero-features">
+                    <span>◎ Expense Tracking</span>
+                    <span>◉ Budget Monitoring</span>
+                    <span>✦ Smart Analytics</span>
+                </div>
+            </div>
+
+            <div class="hero-footer">
+                EXPENSE AI · SMART FINANCIAL MANAGEMENT PLATFORM
+            </div>
+
+        </div>
+
+        <!-- RIGHT LOGIN SECTION -->
+        <div class="auth-form-section">
+
+            <div class="auth-top">
+                <span>Welcome to Expense AI</span>
+                <p>
+                    New to Expense AI?
+                    <button type="button" onclick="showAuth('signup')">
+                        Create account
+                    </button>
+                </p>
+            </div>
+
+            <div class="auth-form-content">
+
+                <span class="form-eyebrow">WELCOME BACK</span>
+
+                <h2 id="authHeading">Login to your account</h2>
+
+                <p class="auth-description">
+                    Access your Expense AI workspace and manage
+                    your money more efficiently.
+                </p>
+
+                <div class="auth-tabs">
+                    <button
+                        id="loginTab"
+                        type="button"
+                        class="active"
+                        onclick="showAuth('login')">
+                        Login
+                    </button>
+
+                    <button
+                        id="signupTab"
+                        type="button"
+                        onclick="showAuth('signup')">
+                        Register
+                    </button>
+                </div>
+
+                <form id="authForm">
+
+                    <div id="nameField" class="hidden">
+                        <label for="name">Full Name</label>
+                        <input
+                            id="name"
+                            type="text"
+                            placeholder="Enter your full name">
+                    </div>
+
+                    <label for="email">Email Address</label>
+
+                    <div class="auth-input-wrap">
+                        <span>✉</span>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="name@example.com"
+                            required>
+                    </div>
+
+                    <label for="password">Password</label>
+
+                    <div class="auth-input-wrap">
+                        <span>♙</span>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            required>
+                    </div>
+
+                    <button
+                        class="primary-btn auth-submit"
+                        type="submit"
+                        id="authSubmit">
+                        Sign In <span>→</span>
+                    </button>
+
+                </form>
+
+                <p id="authMessage"></p>
+
+                <div class="auth-security">
+                    <div class="security-icon">✓</div>
+
+                    <div>
+                        <strong>Secure & Private</strong>
+                        <p>Protected with JWT authentication.</p>
+                    </div>
+
+                    <span class="security-check">✓</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MAIN APPLICATION -->
+<div id="app" class="app hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h1>Expense <span>AI</span></h1>
+
+        <p class="side-label">MENU</p>
+
+        <button class="nav active" onclick="navigate('dashboard',this)">▦ Dashboard</button>
+        <button class="nav" onclick="navigate('expenses',this)">↘ Expenses</button>
+        <button class="nav" onclick="navigate('income',this)">↗ Income</button>
+        <button class="nav" onclick="navigate('budgets',this)">◎ Budgets</button>
+        <button class="nav" onclick="navigate('reports',this)">▤ Reports</button>
+
+        <button class="logout" onclick="logout()">↪ Logout</button>
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header>
+            <div>
+                <h2 id="pageTitle">Dashboard</h2>
+                <p>Welcome back to your financial overview.</p>
+            </div>
+
+            <span class="user-icon">👤</span>
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page">
+
+            <!-- FINANCIAL SUMMARY CARDS -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <p>Total Income</p>
+                    <h2 id="totalIncome">₹0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Expenses</p>
+                    <h2 id="totalExpenses">₹0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <p>Available Balance</p>
+                    <h2 id="balance">₹0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <p>Transactions</p>
+                    <h2 id="transactions">0</h2>
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD CHARTS -->
+            <div class="content-grid">
+
+                <!-- EXPENSE CATEGORY CHART -->
+                <div class="panel">
+                    <h3>Expense Categories</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+
+
+                <!-- RECENT EXPENSES -->
+                <div class="panel">
+                    <h3>Recent Expenses</h3>
+                    <div id="recentExpenses"></div>
+                </div>
+
+
+                <!-- MONTHLY ANALYTICS -->
+                <div class="panel monthly-panel">
+                    <h3>Monthly Income vs Expenses</h3>
+
+                    <div class="monthly-chart-container">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SMART SPENDING ALERTS -->
+            <div id="budgetAlerts" class="budget-alerts"></div>
+
+
+            <!-- MONTHLY BUDGET OVERVIEW -->
+            <div class="panel budget-overview">
+                <h3>Monthly Budget Overview</h3>
+
+                <div id="budgetSummary">
+                    <p>Loading budget information...</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- EXPENSES PAGE -->
+        <section id="expenses" class="page hidden">
+
+            <div class="panel">
+                <h3>Add / Update Expense</h3>
+
+                <form id="expenseForm" class="record-form">
+
+                    <input id="expenseId" type="hidden">
+
+                    <input id="expenseTitle" placeholder="Expense title" required>
+
+                    <input id="expenseAmount" type="number"
+                        min="0.01" step="0.01"
+                        placeholder="Amount" required>
+
+                    <select id="expenseCategory" required>
+                        <option value="">Select category</option>
+                        <option>Food</option>
+                        <option>Travel</option>
+                        <option>Shopping</option>
+                        <option>Education</option>
+                        <option>Entertainment</option>
+                        <option>Health</option>
+                        <option>Other</option>
+                    </select>
+
+                    <select id="paymentMethod" required>
+                        <option value="">Payment method</option>
+                        <option>Cash</option>
+                        <option>UPI</option>
+                        <option>Card</option>
+                        <option>Net Banking</option>
+                    </select>
+
+                    <input id="expenseDate" type="date" required>
+
+                    <input id="expenseDescription" placeholder="Description">
+
+                    <button class="primary-btn" type="submit">Save Expense</button>
+
+                </form>
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <h3>Expense Records</h3>
+
+                    <input id="expenseSearch"
+                        placeholder="Search expenses..."
+                        oninput="loadExpenses()">
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="expenseRows"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INCOME PAGE -->
+        <section id="income" class="page hidden">
+
+            <div class="panel">
+                <h3>Add / Update Income</h3>
+
+                <form id="incomeForm" class="record-form">
+
+                    <input id="incomeId" type="hidden">
+
+                    <input id="incomeSource" placeholder="Income source" required>
+
+                    <input id="incomeAmount" type="number"
+                        min="0.01" step="0.01"
+                        placeholder="Amount" required>
+
+                    <input id="incomeDate" type="date" required>
+
+                    <input id="incomeDescription" placeholder="Description">
+
+                    <button class="primary-btn" type="submit">Save Income</button>
+
+                </form>
+            </div>
+
+
+            <div class="panel">
+                <h3>Income Records</h3>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="incomeRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- BUDGETS PAGE -->
+        <section id="budgets" class="page hidden">
+
+            <div class="panel">
+                <h3>Create / Update Budget</h3>
+
+                <form id="budgetForm" class="record-form">
+
+                    <input id="budgetId" type="hidden">
+
+                    <select id="budgetCategory" required>
+                        <option value="">Select category</option>
+                        <option>Food</option>
+                        <option>Travel</option>
+                        <option>Shopping</option>
+                        <option>Education</option>
+                        <option>Entertainment</option>
+                        <option>Health</option>
+                        <option>Other</option>
+                    </select>
+
+                    <input id="budgetLimit" type="number"
+                        min="0.01" step="0.01"
+                        placeholder="Budget limit" required>
+
+                    <select id="budgetMonth" required>
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                    <input id="budgetYear" type="number"
+                        min="2020" placeholder="Year" required>
+
+                    <button class="primary-btn" type="submit">Save Budget</button>
+
+                </form>
+            </div>
+
+
+            <div class="panel">
+                <h3>My Budgets</h3>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Limit</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="budgetRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- REPORTS PAGE -->
+        <section id="reports" class="page hidden">
+
+            <div class="panel">
+                <h3>Monthly Financial Report</h3>
+
+                <div class="report-form">
+
+                    <select id="reportMonth"></select>
+
+                    <input id="reportYear" type="number">
+
+                    <button class="primary-btn" onclick="loadReport()">
+                        Generate Report
+                    </button>
+
+                    <button class="secondary-btn" onclick="downloadCSV()">
+                        Download CSV
+                    </button>
+
+                </div>
+
+                <div id="reportResult"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
